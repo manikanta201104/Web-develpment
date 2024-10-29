@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 50px;
+            background-color: #f0f0f0;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Login</h2>
+<form id="loginForm">
+    <input type="text" id="rollNo" placeholder="Roll Number" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+</form>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        const rollNo = document.getElementById('rollNo').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await axios.post('/userLogin', {
+                RollNo: rollNo,
+                Password: password
+            });
+            alert(response.data); 
+            setTimeout(()=>{
+                if(response)
+             window.location.href='/home'
+            },1000);
+        } catch (error) {
+            if (error.response) {
+                // Handle error responses from the server
+                alert(error.response.data);
+            } else {
+                // Handle network or other errors
+                alert("An error occurred. Please try again.");
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

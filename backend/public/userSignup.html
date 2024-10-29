@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Signup</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #6b778a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            grid-template-columns: 1fr;
+            max-width: 450px;
+            width: 100%;
+            padding-top:10px;
+            padding: 35px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 34px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            /* border:2px solid red; */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .message {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.success {
+            color: #28a745;
+        }
+
+        .message.error {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Signup</h2>
+        <form id="signupForm">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="text" id="rollNo" placeholder="Roll Number" required>
+            <input type="text" id="role" placeholder="Role" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="text" id="idScanCode" placeholder="ID Scan Code" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const name = document.getElementById('name').value;
+            const rollNo = document.getElementById('rollNo').value;
+            const role = document.getElementById('role').value;
+            const password = document.getElementById('password').value;
+            const idScanCode = document.getElementById('idScanCode').value;
+            const email = document.getElementById('email').value;
+            const messageDiv = document.getElementById('message');
+
+            try {
+                const response = await axios.post('/userSignup', {
+                    Name: name,
+                    RollNo: rollNo,
+                    Role: role,
+                    Password: password,
+                    ID_Scan_Code: idScanCode,
+                    Email: email
+                });
+                if(response)
+             window.location.href='/home'
+                
+            } catch (error) {
+                if (error.response) {
+                    // Handle error responses from the server
+                    messageDiv.textContent = error.response.data;
+                    messageDiv.className = 'message error';
+                } else {
+                    // Handle network or other errors
+                    messageDiv.textContent = "An error occurred. Please try again.";
+                    messageDiv.className = 'message error';
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
